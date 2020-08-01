@@ -1,0 +1,8 @@
+//final code 
+#include <Keypad.h>
+#include<LiquidCrystal.h>
+#include<EEPROM.h>
+LiquidCrystal lcd(9,8,7,6,5,4);
+char driver1[10];
+char driver2[10];
+char password1[4];
