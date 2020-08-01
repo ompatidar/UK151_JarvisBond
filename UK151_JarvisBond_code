@@ -73,6 +73,7 @@ void loop()
         } 
 }
 
+
 int add_user()
 { int i;
   lcd.clear();
@@ -95,3 +96,198 @@ int add_user()
       delay(200);
       pass_enter(1);
     }
+  else
+   if(driver2[0]==0)
+    { 
+      int i=10,j=0;
+      while(i<20)
+      {  
+       Key = customKeypad.getKey();
+       if(Key)
+       { 
+         driver2[j]=Key;
+         lcd.print(driver2[j]);
+         EEPROM.write(i,Key);
+         i++;j++;
+       }
+      }
+    delay(200);
+      pass_enter(2);
+    }
+  else
+   {
+     lcd.clear();
+     lcd.print("user limit full");
+     lcd.setCursor(0,1);
+     lcd.print("delete user ?(d)");
+      Key = customKeypad.getKey();
+      while(Key == NO_KEY)
+       Key = customKeypad.getKey();
+       if(Key == 'D')
+       { 
+         show_driver();
+         Key = customKeypad.getKey();
+         while(Key == NO_KEY)
+          Key = customKeypad.getKey();
+         if(Key == '1')
+         {
+           driver1[0] = 0;
+           add_user();
+         }
+         else
+         if(Key == '2')
+         {
+           driver2[0] = 0;
+            add_user();
+         }
+       }  
+      else
+      {
+        if(Key)
+        return(0) ;
+      }
+    }  
+}      
+void pass_enter(int k)
+{ 
+  lcd.clear();
+  lcd.print("enter psswd");
+  lcd.setCursor(0,1);
+  if(k == 1)
+    { 
+      int i=20,j=0;
+      while(i<24)
+      {  
+        Key = customKeypad.getKey();
+        if(Key)
+        { 
+          password1[j]=Key;
+          lcd.print(password1[i]);
+          EEPROM.write(i,Key);
+          i++;j++;
+        }
+       
+      }
+     delay(200);
+    }  
+  if(k == 2)
+  { 
+    int i=30,j=0;
+    while(i<34)
+    {  
+      Key = customKeypad.getKey();
+        if(Key)
+          { 
+            password2[j]=Key;
+            lcd.print(password2[i]);
+            EEPROM.write(i,Key);
+            i++;j++;
+          }
+    }
+    delay(200);
+  }   
+}
+               
+int pass_verify(int k)
+{  
+  int j=0;
+  lcd.clear();
+  lcd.print("enter passkey");
+  lcd.setCursor(0,1);
+  while(j<4)
+  {
+    Key = customKeypad.getKey();
+    if(Key)
+    {entered_psswd[j] = Key;
+     lcd.print(entered_psswd[j]);
+     j++;
+    }
+  }
+  lcd.clear();
+  if( k == 1)
+   { if(!(strncmp(entered_psswd,password1,4)))
+     { Serial.println(password1);
+       lcd.print("bike is started");
+       lcd.setCursor(0,1);
+       lcd.print("press c to stop the bike");
+       stop_bike();            
+     }
+     else
+     { 
+       lcd.clear();
+       lcd.print("wrong psswd");
+       lcd.setCursor(0,1);
+       return(0); 
+      }   
+    }
+  if( k == 2)   
+   { if(!(strncmp(entered_psswd,password2,4)))
+     {
+       lcd.print("bike is started");
+       lcd.setCursor(0,1);
+       lcd.print("press c to stop the bike");
+       stop_bike();            
+     }
+    else
+     { 
+       lcd.clear();
+       lcd.print("wrong psswd");
+       lcd.setCursor(0,1);
+       return(0); 
+     }        
+   }    
+}
+
+     
+void stop_bike()
+{
+   Key = customKeypad.getKey();
+  while(Key==NO_KEY)
+    Key = customKeypad.getKey();
+  if(Key == 'c')
+    { 
+      lcd.clear();
+      lcd.print("bike is stopped");
+      delay(2000);
+    }
+}  
+   
+void show_driver()
+{  lcd.clear();
+    lcd.print("1) ");
+   for(int i=0;i<10;i++)
+    { 
+     lcd.print(driver1[i]);
+    }
+    lcd.setCursor(0,1);
+    lcd.print("2) ");
+    if(driver2[0]!=0)  
+     {
+      for(int i=0;i<10;i++)
+      { 
+        lcd.print(driver2[i]);
+      } 
+     }
+     else
+        lcd.print("not exist");
+    delay(500);
+ }    
+void intialvalues()
+{
+  for(int i=0;i<10;i++)
+  {
+    driver1[i] = EEPROM.read(i);
+  }
+  for(int i=10,j=0;i<20;i++,j++)
+  { 
+    driver2[j] = EEPROM.read(i); 
+  }
+  for(int i=20,j=0;i<24;i++,j++)
+  { 
+    password1[j] = EEPROM.read(i);
+  }
+  for(int i=30,j=0;i<34;i++,j++)
+  {  
+    password2[j] = EEPROM.read(i); 
+  }  
+}
