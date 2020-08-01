@@ -173,7 +173,7 @@ void pass_enter(int k)
   if(k == 2)
   { 
     int i=10,j=0;
-    while(i<20)
+    while(i<14)
     {  
       Key = customKeypad.getKey();
         if(Key)
@@ -261,7 +261,7 @@ void show_driver()
     lcd.setCursor(0,1);
     if(driver2[0]!=0)  
      {
-      for(int i=10;i<20;i++)
+      for(int i=0;i<10;i++)
       { 
         lcd.print(driver2[i]);
       } 
@@ -284,7 +284,7 @@ void intialvalues()
   { 
     password1[j] = EEPROM.read(i);
   }
-  for(int i=30,j=0;i<34;i++,j++)
+  for(int i=10,j=0;i<14;i++,j++)
   {  
     password2[j] = EEPROM.read(i); 
   }  
