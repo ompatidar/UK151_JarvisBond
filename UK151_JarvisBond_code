@@ -72,3 +72,26 @@ void loop()
          //show_driver();
         } 
 }
+
+int add_user()
+{ int i;
+  lcd.clear();
+  lcd.print("enter driving no");
+  lcd.setCursor(0,1);
+  if(driver1[0]==0)
+   { 
+     i=0;
+     while(i<10)
+     {      
+       Key = customKeypad.getKey();
+       if(Key)
+       { 
+         driver1[i]=Key;
+         lcd.print(driver1[i]);
+         EEPROM.write(i,Key);
+         i++;
+       }
+     }
+      delay(200);
+      pass_enter(1);
+    }
