@@ -449,9 +449,6 @@ void intialvalues()
   }  
 }
 
- 
-
-
  /*void SendMessage(char * code)
 {
   mySerial.println("AT+CMGF=1");    
@@ -459,4 +456,17 @@ void intialvalues()
   mySerial.println(code);
   mySerial.println((char)26);
 }*/
+/*
+  void sendlocation()
+ {
+     while(gpsSerial.available()){ // check for gps data 
+     if(ss.encode(gpsSerial.read()))// encode gps data 
+     {  
+       ss.f_get_position(&lat,&lon);
+     }
+     mySerial.println("AT+CMGF=1");    
+     mySerial.println("AT+CMGS=\"+91mobileno\"\r"); 
+     mySerial.println(code);
+     mySerial.println((char)26);
+ }*/
  
